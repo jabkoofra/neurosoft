@@ -1,0 +1,42 @@
+
+1. Napisać narzędzie do testowania optymalizatorów przy pomocy różnych 
+funkcji, zob.:
+
+http://en.wikipedia.org/wiki/Test_functions_for_optimization
+
+2. Dopisać metody inicjalizujące wewnętrzne parametry optymalizatorów 
+(teraz są na sztywno inicjalizowane w konstruktorze).
+
+3. Napisać interfejs umożliwiający stosowanie jako źródła funkcji 
+celu programu w języku C:
+
+    a) zakładamy, że program w C ma funkcje:
+         init(char** params)
+         double cost(double* v, int nv)
+    b) napisać wrapper umożliwiający uruchomienie osobnego procesu, 
+    wywołanie funkcji init wraz z przekazanymi parametrami oraz 
+    komunikację z procesem głównym
+    c) napisać interfejs potrafiący uruchomić jednocześnie 
+    wiele procesów z pkt. b) i używać ich jako źródeł funkcji 
+    celu (wynikowa wartość funkcji celu jest
+        sumą wartości zwróconych przez procesy)
+    d) do pkt c) przetestować dwa podejścia:
+        - kod w C jest w postaci biblioteki (*.so), a kod główny 
+        forkuje podrzędne procesy, które wywołują fukcje z tej biblioteki
+        - procesy podrzędne są osobnymi plikami wykonywalnymi z 
+        wkompilowanym kodem w C, proces główny uruchamia procesy te 
+        wykonywalne podrzędne
+ 
+ 
+ 
+ napisac kod aclely test function w c i z neigo skorzystać
+ 
+ w c mamy 2 funckje init i cost które należy kolejno wywołac,init ustawia parametry
+ cost liczy funkcje kosztu 
+ 
+ 
+4. Napisać implementację optymalizatora L-BFGS
+
+5. Dodać możliwość ograniczenia z góry z i dołu dziedziny parametrów.
+
+
