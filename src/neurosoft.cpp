@@ -47,33 +47,17 @@ const char* sendPipe(std::string msg, Poco::Pipe &inPipe) {
 int main(int argc, char **argv) {
 
 	TestLBFGS lbfgs;
-	lbfgs.sendMesToPipe("111","222","333",NULL);
+	lbfgs.sendMesToPipe("q","1","w","2","e","3","r","4",NULL);
 
-//	std::string cmd("/home/jabko/workspace/PipePocoRead/Debug/PipePocoRead");
-//	std::vector<std::string> args;
-//	args.push_back(" ");
-//	Poco::Pipe outPipe;
-//	Poco::Pipe inPipe;
-//	std::cout << "PID: " << getpid() << std::endl;
-//	ProcessHandle ph = Process::launch(cmd, args, &inPipe, &outPipe, 0);
-//	const char *r = sendPipe("1729",inPipe);
-//	inPipe.writeBytes((const void*) r, 14);
-//	std::cout<<"PID2 "<< ph.id()<<std::endl;
+	std::string receive ="";
+	lbfgs.receiveMessFromPipe();
 
-	char buff[1];
-	memset((char *) &buff, 0, strlen(buff));
-	int t = 1;
-	std::string receive = "";
+	receive = lbfgs.getReceiveString();
+	std::cout << "Odebrane: "<<std::endl<<receive<<"|:|" ;
 
-
-	while (t) {
-		receive += buff;
-		t = lbfgs.outPipe.readBytes(buff, 1);
-//		std::cout<<buff<<"|"<<receive<<std::endl;
-	}
-	std::cout<<std::endl;
-	std::cout << receive << std::endl;
-
+	double d = Poco::NumberParser::parseFloat(receive);
+	sleep(3);
+	std::cout<< lbfgs.getReceiveDouble()<< std::endl;
 //
 //	NMOptimizer opt;
 //	EvoOptimizer evo;

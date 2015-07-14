@@ -6,13 +6,34 @@
  */
 
 #include "neuroSoft.h"
+#include <Poco/NumberParser.h>
 
 TestLBFGS::TestLBFGS() {
 	std::string cmd("/home/jabko/workspace/PipePocoRead/Debug/PipePocoRead");
-	std::vector<std::string> args;
+	args.clear();
 	Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, &inPipe, &outPipe,
 			0);
+	 receiveString.clear();
+ receiveDouble=0;
+}
 
+
+TestLBFGS::TestLBFGS(char* arg, ...) {
+	std::string cmd("/home/jabko/workspace/PipePocoRead/Debug/PipePocoRead");
+	std::vector<std::string> args;
+
+	va_list ap;
+	va_start(ap, arg);
+	args.push_back(arg);
+	while (1) {
+		char *str = va_arg(ap, char *); // get next argument
+		if (str == NULL)
+			break;
+		args.push_back(str);
+	}
+
+	Poco::ProcessHandle ph = Poco::Process::launch(cmd, args, &inPipe, &outPipe,
+			0);
 }
 
 int TestLBFGS::sendMesToPipe(char* msg, ...) {
@@ -42,6 +63,35 @@ int TestLBFGS::sendMesToPipe(char* msg, ...) {
 	Poco::NumberFormatter::append(len, paragraph);
 	buff = len + "\n" + buff;
 	std::cout << buff << "|" << std::endl;
+
 	int send = this->inPipe.writeBytes((const void*) buff.data(), buff.size());
 	return send;
 }
+
+void TestLBFGS::receiveMessFromPipe(void){
+	char buff[1];
+	memset((char *) &buff, 0, strlen(buff));
+	int t = 1;
+	std::string receive = "";
+
+	while (t) {
+		receive += buff;
+		t = outPipe.readBytes(buff, 1);
+	}
+
+	receiveString.append(receive);
+			receiveString.append("\n");
+
+//	receiveDouble = Poco::NumberParser::parseFloat(receive,'.',' ');
+}
+
+
+
+std::string TestLBFGS::getReceiveString(){
+	return this->receiveString;
+}
+
+double TestLBFGS::getReceiveDouble(){
+	return this->receiveDouble;
+}
+

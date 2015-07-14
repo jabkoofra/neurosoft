@@ -14,6 +14,7 @@
 #include "Poco/Process.h"
 #include <Poco/NumberFormatter.h>
 #include "Poco/NumberParser.h"
+#include "Poco/NumberParser.h"
 #include "Poco/Random.h"
 #include "Test.h"
 #include <iostream>
@@ -23,15 +24,23 @@
 class TestLBFGS {
 public:
 
-	TestLBFGS();
+	TestLBFGS(void);
+	TestLBFGS(char* args, ...);
 	int sendMesToPipe(char* msg, ...);
-	std::string receiveMessFromPipe();
-	Poco::Pipe outPipe;
-	Poco::Pipe inPipe;
+	void receiveMessFromPipe(void);
+
+	std::string getReceiveString(void);
+	double getReceiveDouble(void);
+
 
 private:
 	std::string cmd;
 	std::vector<std::string> args;
+	Poco::Pipe outPipe;
+	Poco::Pipe inPipe;
+
+	std::string receiveString;
+	double receiveDouble;
 
 };
 
